@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>时钟</title>
+    <style>
+        /* css变量 */
+        :root {
+            --clock-color: rgb(255, 255, 255);
+            --clock-bg-color: rgb(0, 0, 0);
+        }
+
+        * {
+            margin: 0 auto;
+            padding: 0;
+        }
+
+        .functions,
+        .name {
+            /* 对齐中间 */
+            text-align: center;
+        }
+
+        .functions {
+            /* 光标 */
+            cursor: pointer;
+            /* 样式 */
+            background: #d7d7d7;
+            margin-top: 10px;
+            border-radius: 50px;
+            width: 80px;
+            aspect-ratio: 10/5;
+        }
+
+        .clock {
+            display: flex;
+            background: var(--clock-bg-color);
+            /* 规定宽高，宽高比 16:9 */
+            width: 100%;
+            aspect-ratio: 16/9;
+        }
+
+        .time {
+            /* flex布局，对齐，垂直居中 */
+            display: flex;
+            text-align: center;
+            align-items: center;
+            flex: 1;
+            /* 颜色 */
+            color: var(--clock-color);
+        }
+
+        .h,
+        .min,
+        .s,
+        .interval {
+            /* 字体大小 */
+            font-size: 20dvw;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 内容标题 -->
+    <div class="name">
+        <h1>clock</h1>
+    </div>
+    <!-- 时钟 -->
+    <div class="clock">
+        <div class="time">
+            <h1 class="h">00</h1>
+        </div>
+        <div class="time">
+            <h1 class="interval">:</h1>
+        </div>
+        <div class="time">
+            <h1 class="min">00</h1>
+        </div>
+        <div class="time">
+            <h1 class="interval">:</h1>
+        </div>
+        <div class="time">
+            <h1 class="s">00</h1>
+        </div>
+    </div>
+    <!-- 全屏功能 -->
+    <div class="functions">
+        <h2>全屏</h2>
+    </div>
+
+    <!-- 其他功能，未想好，未来添加 -->
+    <!--  -->
+    <div class="others"></div>
+
+    <script>
+        async function acquireScreenWakeLock() {
+            try {
+                const wakeLock = await navigator.wakeLock.request('screen');
+                console.log('Screen Wake Lock acquired:', wakeLock);
+            } catch (error) {
+                console.error('Error acquiring Screen Wake Lock:', error);
+            }
+        }
+
+        // 调用函数
+        acquireScreenWakeLock();
+        // console.log(navigator.wakeLock.request(screen));
+        // wakeLock 锁
+        // navigator.wakeLock.request(screen)
+        // 获取各个时间盒子
+        const h = document.querySelector('.h');
+        const min = document.querySelector('.min');
+        const s = document.querySelector('.s');
+        // 全屏元素
+        const FullScreen = document.querySelector('.clock');
+        // 补零函数
+        setInterval(() => {
+            const date = new Date();
+            h.innerHTML = date.getHours() < 10 ? '0' + date.getHours() : '' + date.getHours()
+            min.innerHTML = date.getMinutes() < 10 ? '0' + date.getMinutes() : '' + date.getMinutes()
+            s.innerHTML = date.getSeconds() < 10 ? '0' + date.getSeconds() : '' + date.getSeconds()
+        })
+        // 全屏函数
+        document.querySelector('.functions').onclick = () => {
+            // 电脑使用判断浏览器是否支持全屏API
+            function requestFullScreen(element) {
+                if (element.requestFullscreen) {
+                    element.requestFullscreen();
+                } else if (element.mozRequestFullScreen) { // Firefox
+                    element.mozRequestFullScreen();
+                } else if (element.webkitRequestFullscreen) { // Chrome, Safari and Opera
+                    element.webkitRequestFullscreen();
+                } else if (element.msRequestFullscreen) { // IE/Edge
+                    element.msRequestFullscreen();
+                }
+            }
+            // 手机屏幕状态及全屏功能
+            if (window.matchMedia("(orientation: portrait)").matches) {
+                alert("请将设备旋转至横屏以获得最佳体验！");
+            }
+            requestFullScreen(FullScreen);
+        }
+        // 检测是否横屏状态函数
+        function checkOrientation() {
+            if (window.orientation === 0 || window.orientation === 180) {
+                alert("请将设备旋转至横屏以获得最佳体验！");
+            }
+        }
+        // 监听屏幕方向变化事件
+        window.addEventListener("orientationchange", checkOrientation);
+    </script>
+</body>
+
+</html>
