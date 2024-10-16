@@ -98,9 +98,9 @@
         async function acquireScreenWakeLock() {
             try {
                 const wakeLock = await navigator.wakeLock.request('screen');
-                console.log('Screen Wake Lock acquired:', wakeLock);
+                alert('Screen Wake Lock acquired:');
             } catch (error) {
-                console.error('Error acquiring Screen Wake Lock:', error);
+                alert('Error acquiring Screen Wake Lock:');
             }
         }
 
@@ -138,14 +138,14 @@
             }
             // 手机屏幕状态及全屏功能
             if (window.matchMedia("(orientation: portrait)").matches) {
-                alert("请将设备旋转至横屏以获得最佳体验！");
+                //alert("请将设备旋转至横屏以获得最佳体验！");
             }
             requestFullScreen(FullScreen);
         }
         // 检测是否横屏状态函数
         function checkOrientation() {
             if (window.orientation === 0 || window.orientation === 180) {
-                alert("请将设备旋转至横屏以获得最佳体验！");
+                //alert("请将设备旋转至横屏以获得最佳体验！");
             }
         }
         // 监听屏幕方向变化事件
