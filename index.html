@@ -98,9 +98,9 @@
         async function acquireScreenWakeLock() {
             try {
                 const wakeLock = await navigator.wakeLock.request('screen');
-                alert('Screen Wake Lock acquired:');
+                alert('Screen Wake Lock is ok:');
             } catch (error) {
-                alert('Error acquiring Screen Wake Lock:');
+                alert('Error acquiring Screen Wake Lock');
             }
         }
 
